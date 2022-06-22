@@ -1,11 +1,11 @@
 import Footer from "../components/Footer";
+import Navigation from "../components/Navigation";
 
 const Home = () => {
   return (
     <div className="flex flex-col min-h-screen">
-      <header className="max-w-7xl">
-        <nav className="bg-gray-500">Nawigavja</nav>
-      </header>
+      <Navigation />
+
       <main className="flex-grow">main</main>
       <Footer />
     </div>
