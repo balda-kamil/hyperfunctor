@@ -10,8 +10,10 @@ const ProductDetails = ({
 
   return (
     <div>
-      <h2>{data.title}</h2><br/>
-      <p>{data.description}</p><br/>
+      <h2>{data.title}</h2>
+      <br />
+      <p>{data.description}</p>
+      <br />
       <p>{data.price} zł</p>
       <img src={data.image} alt={data.title} />
     </div>
@@ -25,12 +27,12 @@ export const getStaticPaths = async () => {
   const data: StoreApiResponse[] = await res.json();
 
   return {
-    paths: data.map(product => {
+    paths: data.map((product) => {
       return {
         params: {
-          productId: product.id.toString()
-        }
-      }
+          productId: product.id.toString(),
+        },
+      };
     }),
     fallback: false,
   };
