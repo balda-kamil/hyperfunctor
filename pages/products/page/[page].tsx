@@ -4,6 +4,7 @@ import ProductListItem from "../../product-list-item";
 import { v4 as uuidv4 } from "uuid";
 
 export interface StoreApiResponse {
+  map(arg0: (product: any) => JSX.Element): import("react").ReactNode;
   id: number;
   title: string;
   price: number;

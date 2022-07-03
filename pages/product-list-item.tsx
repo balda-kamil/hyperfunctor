@@ -1,4 +1,5 @@
 import Link from "next/link";
+import Image from 'next/image'
 
 interface ListItem {
   data: {
@@ -18,7 +19,11 @@ const ProductListItem = ({ data }: ListItem) => {
           <Link href={`/product/${data.id}`}>
             <a>
               <div className="rounded-lg overflow-hidden bg-gray-200 aspect-w-1 aspect-h-1 group-hover:opacity-75">
-                <img
+                <Image
+                  layout="responsive"
+                  width={16}
+                  height={9}
+                  objectFit="contain"
                   src={data.image}
                   alt={data.title}
                   className="w-full h-full object-center object-cover"
@@ -42,3 +47,5 @@ const ProductListItem = ({ data }: ListItem) => {
 };
 
 export default ProductListItem;
+
+

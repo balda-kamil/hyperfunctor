@@ -2,9 +2,10 @@
 const nextConfig = {
   reactStrictMode: true,
   trailingSlash: true,
-  rules: {
-    "@next/next/no-img-element": "off",
-  },
+  images: {
+    domains: ['naszsklep-api.vercel.app'],
+    formats: ['image/avif', 'image/webp']
+  }
 };
 
 module.exports = nextConfig;

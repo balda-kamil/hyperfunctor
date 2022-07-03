@@ -1,5 +1,6 @@
 import { InferGetStaticPropsType } from "next";
 import { InferGetStaticPaths } from "../products";
+import Image from 'next/image'
 
 const ProductDetails = ({
   data,
@@ -16,28 +17,26 @@ const ProductDetails = ({
       <p>{data.description}</p>
       <br />
       <p>{data.price} zł</p>
-      <img src={data.image} alt={data.title} />
+      <Image width={16} height={9} objectFit="contain" layout="responsive" src={data.image} alt={data.title} />
     </div>
   );
 };
 
 export default ProductDetails;
 
-const PRODUCTS_NUMBER = 4000
-
 export const getStaticPaths = async () => {
   const res = await fetch("https://naszsklep-api.vercel.app/api/products/");
   const data: StoreApiResponse[] = await res.json();
 
   return {
-    paths: Array.from({length : PRODUCTS_NUMBER}, (_,i) => {
+    paths: data.map((product) => {
       return {
         params: {
-          productId: (i + 1).toString(),
+          productId: product.id.toString(),
         },
       };
     }),
-    fallback: false,
+    fallback: 'blocking',
   };
 };
 
