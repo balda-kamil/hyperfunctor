@@ -9,6 +9,8 @@ const ProductDetails = ({
   if (!data) {
     return <p> coś poszło nie tak! </p>;
   }
+
+  console.log("TEST")
   
   return (
     <div>
