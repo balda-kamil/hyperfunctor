@@ -1,6 +1,6 @@
 import { InferGetStaticPaths } from "..";
 import { InferGetStaticPropsType } from "next";
-import ProductListItem from "../../product-list-item";
+import ProductListItem from "../../../components/ProductListItem";
 import { v4 as uuidv4 } from "uuid";
 
 export interface StoreApiResponse {

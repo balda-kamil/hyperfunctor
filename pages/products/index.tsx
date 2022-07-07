@@ -1,5 +1,4 @@
-import { useState } from "react";
-import ProductListItem from "../product-list-item";
+import ProductListItem from "../../components/ProductListItem";
 import { v4 as uuidv4 } from "uuid";
 import { useQuery } from "react-query";
 
@@ -9,6 +8,7 @@ export interface StoreApiResponse {
   title: string;
   price: number;
   description: string;
+  longDescription: string,
   category: string;
   image: string;
   rating: {
@@ -16,6 +16,7 @@ export interface StoreApiResponse {
     count: number;
   };
 }
+
 
 const ProductsPage = () => {
 
