@@ -1,10 +1,9 @@
 import { InferGetStaticPropsType } from "next";
 import { InferGetStaticPaths } from "../products";
-import { StoreApiResponse } from "../products";
 import Image from "next/image";
-import ReactMarkdown from "react-markdown";
-import Head from "next/head";
 import { NextSeo } from "next-seo";
+import { serialize } from 'next-mdx-remote/serialize'
+import MyReactMarkdown from "../../components/MyReactMakrdown";
 
 const ProductDetails = ({
   data,
@@ -29,10 +28,10 @@ const ProductDetails = ({
               width: 800,
               height: 600,
               alt: data.title,
-              type: 'image/jpeg',
-            }
+              type: "image/jpeg",
+            },
           ],
-          site_name: 'SiteName',
+          site_name: "SiteName",
         }}
       />
       <h2>{data.title}</h2>
@@ -40,7 +39,7 @@ const ProductDetails = ({
       <p>{data.description}</p>
       <br />
       <article className="prose lg:prose-xl">
-        <ReactMarkdown>{data.longDescription}</ReactMarkdown>
+        <MyReactMarkdown>{data.longDescription}</MyReactMarkdown>
       </article>
       <br />
       <p>{data.price} zł</p>
@@ -89,9 +88,36 @@ export const getStaticProps = async ({
   );
   const data: StoreApiResponse | null = await res.json();
 
+
+  if(!data){
+    return{
+      props: {},
+      notFound: true,
+    } 
+  }
+
+
   return {
     props: {
-      data,
+      data: {
+        ...data,
+        longDescription: await serialize(data?.longDescription)
+      }
     },
   };
 };
+
+
+interface StoreApiResponse {
+  id: number;
+  title: string;
+  price: number;
+  description: string;
+  longDescription: string,
+  category: string;
+  image: string;
+  rating: {
+    rate: number;
+    count: number;
+  };
+}

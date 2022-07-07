@@ -2,20 +2,7 @@ import { InferGetStaticPaths } from "..";
 import { InferGetStaticPropsType } from "next";
 import ProductListItem from "../../../components/ProductListItem";
 import { v4 as uuidv4 } from "uuid";
-
-export interface StoreApiResponse {
-  map(arg0: (product: any) => JSX.Element): import("react").ReactNode;
-  id: number;
-  title: string;
-  price: number;
-  description: string;
-  category: string;
-  image: string;
-  rating: {
-    rate: number;
-    count: number;
-  };
-}
+import { StoreApiResponse } from "../index";
 
 const Page = ({ data }:  InferGetStaticPropsType<typeof getStaticProps>)  => {
 
@@ -25,7 +12,7 @@ const Page = ({ data }:  InferGetStaticPropsType<typeof getStaticProps>)  => {
         <h2 className="sr-only">Products</h2>
         <div className="-mx-px border-l border-gray-200 grid grid-cols-2 sm:mx-0 md:grid-cols-3 lg:grid-cols-4">
           {data &&
-            data.map((product) => (
+            [data].map((product) => (
               <ProductListItem
                 data={{
                   id: product.id,
