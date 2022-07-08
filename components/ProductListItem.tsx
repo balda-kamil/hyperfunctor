@@ -1,5 +1,6 @@
 import Link from "next/link";
-import Image from 'next/image'
+import Image from "next/image";
+import { useCartState } from "./Cart/CartContext";
 
 interface ListItem {
   data: {
@@ -12,6 +13,7 @@ interface ListItem {
 }
 
 const ProductListItem = ({ data }: ListItem) => {
+  const cartState = useCartState();
   return (
     <>
       {data && (
@@ -29,9 +31,8 @@ const ProductListItem = ({ data }: ListItem) => {
                   className="w-full h-full object-center object-cover"
                 />
               </div>
-              <div className="pt-10 pb-4 text-center">
+              <div className="pt-10 mb-4 text-center">
                 <h3 className="text-sm font-medium text-gray-900">
-                  <span aria-hidden="true" className="absolute inset-0" />
                   {data.title}
                 </h3>
                 <p className="mt-4 text-base font-medium text-gray-900">
@@ -40,6 +41,18 @@ const ProductListItem = ({ data }: ListItem) => {
               </div>
             </a>
           </Link>
+          <button
+            onClick={() =>
+              cartState.addItemToCart({
+                price: 40,
+                title: data.title,
+              })
+            }
+            type="button"
+            className="mx-auto block px-4 py-2 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+          >
+            Add to cart
+          </button>
         </div>
       )}
     </>
@@ -47,5 +60,3 @@ const ProductListItem = ({ data }: ListItem) => {
 };
 
 export default ProductListItem;
-
-

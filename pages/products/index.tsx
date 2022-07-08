@@ -1,15 +1,14 @@
 import ProductListItem from "../../components/ProductListItem";
 import { v4 as uuidv4 } from "uuid";
 import { useQuery } from "react-query";
-import { MDXRemoteSerializeResult } from "next-mdx-remote";
-
+import { MarkDownResult } from "../../utils";
 
 export interface StoreApiResponse {
   id: number;
   title: string;
   price: number;
   description: string;
-  longDescription: MDXRemoteSerializeResult<Record<string, unknown>>,
+  longDescription: MarkDownResult,
   category: string;
   image: string;
   rating: {
