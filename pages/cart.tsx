@@ -11,7 +11,11 @@ const CartPage = () => {
       <ul>
         {cartState.items.map((item, index) => (
           <li key={`${ID}-${index}`}>
-            {item.title} - {item.price}
+            {item.count} - {item.title} - {item.price} <br/>
+            <button onClick={() => cartState.removeItemFromCart(item.id)}>
+              usuń z koszyka
+            </button>
+            <br/><br/>
           </li>
         ))}
       </ul>

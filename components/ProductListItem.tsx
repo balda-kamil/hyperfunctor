@@ -44,8 +44,10 @@ const ProductListItem = ({ data }: ListItem) => {
           <button
             onClick={() =>
               cartState.addItemToCart({
+                id: data.id,
                 price: 40,
                 title: data.title,
+                count: 1,
               })
             }
             type="button"
