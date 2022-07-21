@@ -15,7 +15,7 @@ const Page = ({ data }:  InferGetStaticPropsType<typeof getStaticProps>)  => {
             [data].map((product) => (
               <ProductListItem
                 data={{
-                  id: product.id,
+                  slug: product.slug,
                   title: product.title,
                   description: product.description,
                   price: product.price,

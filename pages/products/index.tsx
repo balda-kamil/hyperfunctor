@@ -7,6 +7,7 @@ import { GetProductsListDocument, GetProductsListQuery } from "../../generated/g
 
 export interface StoreApiResponse {
   id: number;
+  slug: string,
   title: string;
   price: number;
   description: string;

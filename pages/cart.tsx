@@ -26,7 +26,8 @@ const CartPage = () => {
               className="border-t border-b border-gray-200 divide-y divide-gray-200"
             >
               {cartState.items.map((product, productIdx) => (
-                <li key={product.id} className="flex py-6 sm:py-10">
+                
+                <li key={product.slug} className="flex py-6 sm:py-10">
                   <div className="flex-shrink-0 min-w-[128px]">
                     <Image
                       layout="responsive"
@@ -51,7 +52,7 @@ const CartPage = () => {
                         </h3>
                         <button
                           type="button"
-                          onClick={() => cartState.removeItemFromCart(product.id)}
+                          onClick={() => cartState.removeItemFromCart(product.slug)}
                           className="ml-4 text-sm font-medium text-indigo-600 hover:text-indigo-500 sm:ml-0 sm:mt-3"
                         >
                           <span>Remove</span>
