@@ -4,7 +4,7 @@ import { useCartState } from "./Cart/CartContext";
 
 interface ListItem {
   data: {
-    id: number;
+    slug: string;
     title: string;
     description: string;
     price: number;
@@ -18,7 +18,7 @@ const ProductListItem = ({ data }: ListItem) => {
     <>
       {data && (
         <div className="group relative p-4 border-r border-b border-gray-200 sm:p-6">
-          <Link href={`/product/${data.id}`}>
+          <Link href={`/product/${data.slug}`}>
             <a>
               <div className="rounded-lg overflow-hidden bg-gray-200 aspect-w-1 aspect-h-1 group-hover:opacity-75">
                 <Image
@@ -44,10 +44,11 @@ const ProductListItem = ({ data }: ListItem) => {
           <button
             onClick={() =>
               cartState.addItemToCart({
-                id: data.id,
-                price: 40,
+                slug: data.slug,
+                price: data.price,
                 title: data.title,
                 count: 1,
+                image: data.image
               })
             }
             type="button"

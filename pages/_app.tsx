@@ -6,24 +6,29 @@ import { QueryClientProvider, QueryClient } from "react-query";
 import { DefaultSeo } from "next-seo";
 import SEO from "../next-seo.config";
 import { CartStateContextProvider } from "../components/Cart/CartContext";
+import { ApolloProvider } from '@apollo/client'
+import { apolloClient } from '../graphql/apolloClient' 
 
 // Create a client
 const queryClient = new QueryClient();
 
 function MyApp({ Component, pageProps }: AppProps) {
   return (
-    <CartStateContextProvider>
-      <QueryClientProvider client={queryClient}>
-        <DefaultSeo {...SEO} />
-        <div>
-          <Navigation />
-          <main>
-            <Component {...pageProps} />
-          </main>
-          <Footer />
-        </div>
-      </QueryClientProvider>
-    </CartStateContextProvider>
+    <ApolloProvider client={apolloClient}>
+      <CartStateContextProvider>
+        <QueryClientProvider client={queryClient}>
+          <DefaultSeo {...SEO} />
+          <div>
+            <Navigation />
+            <iframe width="100%" height="800" src="https://deploy-preview-5--fanciful-manatee-ec981d.netlify.app/"/>
+            <main>
+              <Component {...pageProps} />
+            </main>
+            <Footer />
+          </div>
+        </QueryClientProvider>
+      </CartStateContextProvider>
+    </ApolloProvider>
   );
 }
 

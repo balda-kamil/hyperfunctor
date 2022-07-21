@@ -2,8 +2,10 @@ import { InferGetStaticPropsType } from "next";
 import { InferGetStaticPaths } from "../products";
 import Image from "next/image";
 import { NextSeo } from "next-seo";
-import { serialize } from 'next-mdx-remote/serialize'
+import { serialize } from "next-mdx-remote/serialize";
 import MyReactMarkdown from "../../components/MyReactMakrdown";
+import { apolloClient } from "../../graphql/apolloClient";
+import { GetProductDetailsBySlugDocument, GetProductDetailsBySlugQuery, GetProductDetailsBySlugQueryVariables, GetProductsSlugsDocument, GetProductsSlugsQuery } from "../../generated/graphql";
 
 const ProductDetails = ({
   data,
@@ -15,26 +17,26 @@ const ProductDetails = ({
   return (
     <div>
       <NextSeo
-        title={data.title}
+        title={data.name}
         description={data.description}
-        canonical={`https://hyperfunctor.vercel.app/product/${data.id}/`}
+        canonical={`https://hyperfunctor.vercel.app/product/${data.slug}/`}
         openGraph={{
-          url: `https://hyperfunctor.vercel.app/product/${data.id}/`,
-          title: data.title,
+          url: `https://hyperfunctor.vercel.app/product/${data.slug}/`,
+          title: data.name,
           description: data.description,
           images: [
             {
-              url: data.image,
+              url: data.images[0].url,
               width: 800,
               height: 600,
-              alt: data.title,
+              alt: data.name,
               type: "image/jpeg",
             },
           ],
           site_name: "SiteName",
         }}
       />
-      <h2>{data.title}</h2>
+      <h2>{data.name}</h2>
       <br />
       <p>{data.description}</p>
       <br />
@@ -48,8 +50,8 @@ const ProductDetails = ({
         height={9}
         objectFit="contain"
         layout="responsive"
-        src={data.image}
-        alt={data.title}
+        src={data.images[0].url}
+        alt={data.name}
       />
     </div>
   );
@@ -58,14 +60,16 @@ const ProductDetails = ({
 export default ProductDetails;
 
 export const getStaticPaths = async () => {
-  const res = await fetch("https://naszsklep-api.vercel.app/api/products/");
-  const data: StoreApiResponse[] = await res.json();
+
+  const { data } = await apolloClient.query<GetProductsSlugsQuery>({
+    query: GetProductsSlugsDocument,
+  });
 
   return {
-    paths: data.map((product) => {
+    paths: data.products.map((product) => {
       return {
         params: {
-          productId: product.id.toString(),
+          productSlug: product.slug,
         },
       };
     }),
@@ -76,48 +80,34 @@ export const getStaticPaths = async () => {
 export const getStaticProps = async ({
   params,
 }: InferGetStaticPaths<typeof getStaticPaths>) => {
-  if (!params?.productId) {
+
+  if (!params?.productSlug) {
     return {
       props: {},
       notFound: true,
     };
   }
 
-  const res = await fetch(
-    `https://naszsklep-api.vercel.app/api/products/${params.productId}`
-  );
-  const data: StoreApiResponse | null = await res.json();
+  const { data } = await apolloClient.query<GetProductDetailsBySlugQuery, GetProductDetailsBySlugQueryVariables>({
+    variables: {
+      slug: params.productSlug,
+    },
+    query: GetProductDetailsBySlugDocument,
+  });
 
-
-  if(!data){
-    return{
+  if (!data || !data.product) {
+    return {
       props: {},
       notFound: true,
-    } 
+    };
   }
-
 
   return {
     props: {
       data: {
-        ...data,
-        longDescription: await serialize(data?.longDescription)
-      }
+        ...data.product,
+        longDescription: await serialize(data.product.description),
+      },
     },
   };
 };
-
-
-interface StoreApiResponse {
-  id: number;
-  title: string;
-  price: number;
-  description: string;
-  longDescription: string,
-  category: string;
-  image: string;
-  rating: {
-    rate: number;
-    count: number;
-  };
-}
