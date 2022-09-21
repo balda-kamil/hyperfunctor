@@ -20,7 +20,6 @@ function MyApp({ Component, pageProps }: AppProps) {
           <DefaultSeo {...SEO} />
           <div>
             <Navigation />
-            <iframe width="100%" height="800" src="https://deploy-preview-6--fanciful-manatee-ec981d.netlify.app/"/>
             <main>
               <Component {...pageProps} />
             </main>
