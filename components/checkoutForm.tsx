@@ -6,6 +6,7 @@ import * as yup from "yup";
 
 const checkoutFormSchema = yup.object({
   emailAddress: yup.string().email().required(),
+  nameOnCard: yup.string().required(),
   cardNumber: yup.string().required(),
   expirationDate: yup.string().required(),
   cvc: yup.string().required(),
@@ -22,7 +23,42 @@ const CheckoutForm = () => {
   const { register, handleSubmit, watch, formState: { errors } } = useForm<CheckoutFormData>({
     resolver: yupResolver(checkoutFormSchema)
   });
-  const onSubmit = handleSubmit((data) => console.log(data));
+
+  const [createCheckout, checkoutResponse] = useCreateCheckoutMutation()
+
+  const onSubmit = handleSubmit((data) => {
+    const checkoutItemsCreate = CART_DATA_TODO.map(({count, id}) => {
+      return {
+        quantity: count,
+        product: {
+          connect: {
+            id,
+          }
+        }
+      }
+    })
+
+    createCheckout({
+      variables: {
+        checkout: {
+          email: data.emailAddress,
+          cardName: data.nameOnCard,
+          cardNumber: data.cardNumber,
+          cardExpiration: data.expirationDate,
+          cardCvc: data.cvc,
+          address: data.address,
+          city: data.city,
+          postalCode: data.postalCode,
+
+          checkoutItems: {
+            create: checkoutItemsCreate
+          }
+        }
+      }
+    })
+  });
+
+
 
   return (
     <form onSubmit={onSubmit}>
